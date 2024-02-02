@@ -1,5 +1,6 @@
 const Eris = require("eris");
 require('./keep_alive.js')
+require('./client.js')
 
 const bot = new Eris(process.env.token);
 
