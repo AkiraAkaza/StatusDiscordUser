@@ -11,7 +11,7 @@ bot.on("error", (err) => {
 bot.on("messageCreate", (msg) => {
   if (msg.content.toLowerCase() === "*stream") {
     console.log("Switching to STREAM status");
-    bot.editStatus("dnd", { name: "STREAMING", type: 1, url: "https://twitch.tv/akira_sachiko" });
+    bot.editStatus("dnd", { name: "with Hoàng Lan", type: 1, url: "https://twitch.tv/akira_sachiko" });
   } else if (msg.content.toLowerCase() === "*listening") {
     console.log("Switching to LISTENING status");
     bot.editStatus("dnd", { name: "LISTENING", type: 2 });
