@@ -30,9 +30,4 @@ client.on('message', async (message) => {
    }
 })
 
-client.on('ready', async () => {
-    console.clear()
-    console.log(`${client.user.tag} is online!`)
-})
-
 client.login(process.env.TOKEN);
