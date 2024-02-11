@@ -1,4 +1,4 @@
-import { REST, Routes } from 'discord.js';
+
 require('dotenv').config();
 const { Client, Collection, MessageEmbed } = require("discord.js");
 const axios = require("axios");
