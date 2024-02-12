@@ -1,8 +1,6 @@
 const Eris = require("eris");
 require('./keep_alive.js');
 require('./client.js');
-require('./chatbot.js');
-require('./sendimage.js');
 
 const bot = new Eris(process.env.token);
 
