@@ -8,7 +8,7 @@ const client = new Client({
     disableEveryone: true
 });
 
-const CLIENT_ID = '1193603947198435388'; 
+const CLIENT_ID = "1193603947198435388"; 
 const channel_id = "1206062578506141696";
 const TOKEN = process.env.TOKEN;
 
