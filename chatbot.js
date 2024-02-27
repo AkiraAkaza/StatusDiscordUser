@@ -1,53 +1,37 @@
-
+const discord = require("discord.js");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 require('dotenv').config();
-const { Client, Collection, MessageEmbed } = require("discord.js");
-const axios = require("axios");
+const MODEL = "gemini-pro";
 
-const Discord = require('discord.js');
-const client = new Client({
-    disableEveryone: true
+const API_KEY = process.env.API_KEY;
+const BOT_TOKEN = process.env.DISCORD_TOKEN;
+const CHANNEL_ID = '1209006117594734593';
+
+const ai = new GoogleGenerativeAI(API_KEY);
+const model = ai.getGenerativeModel({ model: MODEL });
+
+const client = new discord.Client({
+  intents: Object.keys(discord.GatewayIntentBits),
 });
 
-const CLIENT_ID = "1193603947198435388"; 
-const channel_id = "1206062578506141696";
-const TOKEN = process.env.TOKEN;
+client.on("ready", () => {
+  console.log("Bot is ready!");
+});
 
-const commands = [
-    {
-        name: 'setchatbot',
-        description: 'Chat bot',
-    },
-];
+client.login(DISCORD_TOKEN);
 
-const rest = new REST({ version: '10' }).setToken(TOKEN);
-
-async function errorEmbed(text, message) {
-    const newEmbed = new Discord.MessageEmbed()
-        .setColor("#FF7676")
-        .setDescription(`**❌ | ${text} **`);
-    return message.channel.send({ embeds: [newEmbed] });
-}
-
-try {
-    console.log('Started refreshing application (/) commands.');
-
-    await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
-
-    console.log('Successfully reloaded application (/) commands.');
-} catch (error) {
-    console.error(error);
-}
-
-client.on('message', async (message) => {
-    if (!message.guild) return;
+client.on("messageCreate", async (message) => {
+  try {
     if (message.author.bot) return;
-    try {
-        if (message.channel.id != channel_id) return;
-        let res = await axios.get(`http://api.brainshop.ai/get?bid=153868&key=rcKonOgrUFmn5usX&uid=1&msg=${encodeURIComponent(message.content)}`);
-        message.reply(res.data.cnt);
-    } catch {
-        errorEmbed(`Bot error, please try again!`, message);
-    }
-});
+    if (message.channel.id !== CHANNEL_ID) return;
 
-client.login(TOKEN);
+    const { response } = await model.generateContent(message.cleanContent);
+
+    message.reply({
+      content: response.text(),
+    });
+  } catch (error) {
+    console.error("Error:", error.message);
+    console.error(error.stack);
+  }
+});
